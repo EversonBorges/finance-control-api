@@ -1,11 +1,11 @@
 package com.manager.control.finance.enums;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.manager.control.finance.configuration.TipoPagamentoDeserializer;
+import com.manager.control.finance.configuration.PaymentMethodsDeserializer;
 import lombok.Getter;
 
 @Getter
-@JsonDeserialize(using = TipoPagamentoDeserializer.class)
+@JsonDeserialize(using = PaymentMethodsDeserializer.class)
 public enum PaymentMethodsEnum {
 
     CREDIT_CARD("CRT", "Cartão de crédito"),

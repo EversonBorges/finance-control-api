@@ -4,10 +4,11 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.manager.control.finance.enums.PaymentMethodsEnum;
+import com.manager.control.finance.utils.GlobalMessages;
 
 import java.io.IOException;
 
-public class TipoPagamentoDeserializer extends JsonDeserializer<PaymentMethodsEnum> {
+public class PaymentMethodsDeserializer extends JsonDeserializer<PaymentMethodsEnum> {
 
     @Override
     public PaymentMethodsEnum deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
@@ -18,6 +19,6 @@ public class TipoPagamentoDeserializer extends JsonDeserializer<PaymentMethodsEn
                 return type;
             }
         }
-        throw new IllegalArgumentException("Código inválido para TipoPagamento: " + code);
+        throw new IllegalArgumentException(GlobalMessages.ILLEGAL_ARGUMENTS_ERROR + code);
     }
 }
