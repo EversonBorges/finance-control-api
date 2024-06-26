@@ -25,13 +25,9 @@ public class ExpensesController {
     private PaymentMethodsService paymentMethodsService;
 
     @PostMapping
-    public ResponseEntity<ExpensesResponseDTO> create(@RequestBody ExpensesRequestDTO dto){
-        Expenses response = service.create(dto);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(response.getId())
-                .toUri();
-        return ResponseEntity.created(location).body(service.convertExpensesToDTO(response));
+    public ResponseEntity<ResponseMessage> create(@RequestBody ExpensesRequestDTO dto){
+        ResponseMessage response = service.create(dto);
+        return ResponseEntity.created(null).body(response);
     }
 
     @GetMapping

@@ -1,5 +1,6 @@
 package com.manager.control.finance.entities;
 
+import com.manager.control.finance.enums.PaymentMethodsEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,26 +33,14 @@ public class Expenses {
     private Integer referenceMonth;
     @Column(name = "reference_year")
     private Integer referenceYear;
+    @Enumerated(EnumType.STRING)
+    private PaymentMethodsEnum paymentMethods;
 
     @ManyToOne
     private Category category;
 
     @ManyToOne
-    private PaymentMethods paymentMethods;
-
-    @ManyToOne
     private CreditCard creditCard;
-
-    public Expenses(String establishment, Integer numberInstallment, Integer quantityInstallments,
-                    Double valuesInstallment, LocalDate purchaseDate,Category category, PaymentMethods paymentMethods) {
-        this.establishment = establishment;
-        this.numberInstallment = numberInstallment;
-        this.quantityInstallments = quantityInstallments;
-        this.valuesInstallment = valuesInstallment;
-        this.purchaseDate = purchaseDate;
-        this.category = category;
-        this.paymentMethods = paymentMethods;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -64,5 +53,23 @@ public class Expenses {
     @Override
     public int hashCode() {
         return Objects.hash(id, establishment);
+    }
+
+    @Override
+    public String toString() {
+        return "Expenses{" +
+                "id=" + id +
+                ", establishment='" + establishment + '\'' +
+                ", numberInstallment=" + numberInstallment +
+                ", quantityInstallments=" + quantityInstallments +
+                ", valuesInstallment=" + valuesInstallment +
+                ", week='" + week + '\'' +
+                ", purchaseDate=" + purchaseDate +
+                ", referenceMonth=" + referenceMonth +
+                ", referenceYear=" + referenceYear +
+                ", category=" + category +
+                ", paymentMethods=" + paymentMethods.getDescriptor() +
+                ", creditCard=" + creditCard +
+                '}';
     }
 }

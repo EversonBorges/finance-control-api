@@ -4,15 +4,21 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.manager.control.finance.Mappers.ExpensesMapper;
 import com.manager.control.finance.dtos.ExpensesRequestDTO;
 import com.manager.control.finance.dtos.ExpensesResponseDTO;
+import com.manager.control.finance.dtos.ReferenceMonthYearExpenses;
+import com.manager.control.finance.dtos.ResponseMessage;
 import com.manager.control.finance.entities.CreditCard;
 import com.manager.control.finance.entities.Expenses;
+import com.manager.control.finance.enums.PaymentMethodsEnum;
 import com.manager.control.finance.exceptions.DataNotFoundException;
 import com.manager.control.finance.repositories.ExpensesRepository;
+import com.manager.control.finance.utils.GlobalMessages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.WeekFields;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -29,46 +35,77 @@ public class ExpensesService {
     @Autowired
     private CreditCardService creditCardService;
 
-    public Expenses create(ExpensesRequestDTO dto){
-        String week = buildWeekMonth(dto.purchaseDate());
-        Expenses expenses = mapper.toEntity(dto);
-        expenses.setWeek(week);
-        return repository.save(expenses);
+    public ResponseMessage create(ExpensesRequestDTO dto){
+
+        List<Expenses> expensesList = new ArrayList<>();
+        var year = dto.purchaseDate().getYear();
+        var month = dto.purchaseDate().getMonth().getValue();
+
+        if(dto.paymentMethods().equals(PaymentMethodsEnum.CREDIT_CARD.getId())){
+            ReferenceMonthYearExpenses reference = verifyBestDayOfBuyCreditCard(dto);
+             year = reference.getYear();
+             month = reference.getMonth();
+        }
+
+        for (int i = 0; i < dto.quantityInstallments(); i++) {
+
+            String week = buildWeekMonth(dto.purchaseDate());
+            Expenses expenses = mapper.toEntity(dto);
+            expenses.setReferenceYear(year);
+            expenses.setReferenceMonth(month);
+            expenses.setNumberInstallment(i + GlobalMessages.ONE);
+            expenses.setWeek(week);
+
+            month ++;
+
+            if(month > GlobalMessages.DECEMBER) {
+                year ++;
+                month = GlobalMessages.ONE;
+            }
+            expensesList.add(expenses);
+        }
+
+        repository.saveAll(expensesList);
+        return new ResponseMessage(GlobalMessages.MSG_SUCCESS);
     }
 
-    private void verifyBestDayOfBuyCreditCard(ExpensesRequestDTO dto, Expenses expenses){
+    private ReferenceMonthYearExpenses verifyBestDayOfBuyCreditCard(ExpensesRequestDTO dto){
+        ReferenceMonthYearExpenses referenceMonthYearExpenses = new ReferenceMonthYearExpenses();
         CreditCard creditCard = creditCardService.findCreditCardById(dto.creditCard().getId());
         var dueDay = creditCard.getDueDate();
         var referenceDayPurchase = creditCard.getReferenceDayPurchase();
 
-        LocalDate now = LocalDate.now();
-        LocalDate dueDate ;
-
-        if(now.getDayOfMonth() >= dueDay){
-            dueDate = LocalDate.of(now.getYear(),now.getMonth().plus(1), dueDay);
-        }else {
-            dueDate = LocalDate.of(now.getYear(),now.getMonth(), dueDay);
-        }
-
+        var year = checkYearIncrement(dto.purchaseDate());
+        var dueDate = LocalDate.of(year, dto.purchaseDate().getMonth().plus(GlobalMessages.ONE).getValue(), dueDay);
         LocalDate bestOfDayPurchase = dueDate.minusDays(referenceDayPurchase);
+        long diffDays = ChronoUnit.DAYS.between(dto.purchaseDate(), bestOfDayPurchase);
 
-        if(dto.purchaseDate().isBefore(bestOfDayPurchase.minusDays(1))){
-            expenses.setReferenceYear(dto.purchaseDate().getYear());
-            expenses.setReferenceMonth(dto.purchaseDate().getMonth().getValue());
-        }else{
-            buildReferenceYearAndMonth(dto, expenses);
+        if(diffDays > GlobalMessages.MAX_DAY){
+            dueDate = LocalDate.of(year, dto.purchaseDate().getMonth().getValue(), dueDay);
         }
+
+        if(dto.purchaseDate().isBefore(bestOfDayPurchase)){
+
+            referenceMonthYearExpenses.setMonth(dueDate.getMonth().getValue());
+            referenceMonthYearExpenses.setYear(dueDate.getYear());
+        }else{
+            referenceMonthYearExpenses.setMonth(dueDate.getMonth().plus(GlobalMessages.ONE).getValue());
+            var dueYear = checkYearIncrement(dueDate);
+            referenceMonthYearExpenses.setYear(dueYear);
+
+        }
+
+        return referenceMonthYearExpenses;
     }
 
-    private static void buildReferenceYearAndMonth(ExpensesRequestDTO dto, Expenses expenses) {
-        var referenceMonth = dto.purchaseDate().getMonth().plus(1).getValue();
-        expenses.setReferenceMonth(referenceMonth);
-
-        if(referenceMonth < dto.purchaseDate().getMonth().getValue()){
-            expenses.setReferenceYear(dto.purchaseDate().plusYears(1).getYear());
-        }else{
-            expenses.setReferenceYear(dto.purchaseDate().getYear());
+    private static int checkYearIncrement(LocalDate date) {
+        int year;
+        if(date.getMonth().getValue() == GlobalMessages.DECEMBER){
+            year = date.getYear() + GlobalMessages.ONE;
+        }else {
+            year = date.getYear();
         }
+        return year;
     }
 
     public List<ExpensesResponseDTO> findAll() {
@@ -102,14 +139,10 @@ public class ExpensesService {
         repository.deleteById(id);
     }
 
-    public ExpensesResponseDTO convertExpensesToDTO(Expenses expenses){
-        return mapper.toDTO(expenses);
-    }
-
     private String buildWeekMonth(LocalDate date){
         WeekFields weekFields = WeekFields.of(Locale.getDefault());
         int weekOfMonth = date.get(weekFields.weekOfMonth());
 
-        return "Semana " + weekOfMonth;
+        return GlobalMessages.WEEK + weekOfMonth;
     }
 }
