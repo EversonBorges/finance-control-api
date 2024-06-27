@@ -2,12 +2,8 @@ package com.manager.control.finance.controllers;
 
 import com.manager.control.finance.dtos.CreditCardRequestDTO;
 import com.manager.control.finance.dtos.CreditCardResponseDTO;
-import com.manager.control.finance.dtos.PaymentMethodsRequestDTO;
-import com.manager.control.finance.dtos.PaymentMethodsResponseDTO;
 import com.manager.control.finance.entities.CreditCard;
-import com.manager.control.finance.entities.PaymentMethods;
 import com.manager.control.finance.services.CreditCardService;
-import com.manager.control.finance.services.PaymentMethodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -18,9 +19,11 @@ public class Revenues {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "amount")
-    private Double amount;
+    private BigDecimal amount;
     @Column(name = "receiving_date")
     private LocalDate receivingDate;
+    @Column(name = "update_job")
+    private Boolean updateJob = false;
 
     @ManyToOne
     private Category category;

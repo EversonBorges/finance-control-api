@@ -13,8 +13,9 @@ public interface RevenuesRepository extends JpaRepository<Revenues, Integer> {
 
     @Query("SELECT rv FROM Revenues rv JOIN rv.category ca " +
             "WHERE ca.description = 'Adiantamento' " +
-            "AND FUNCTION('YEAR', rv.receivingDate) = :year " +
-            "AND FUNCTION('MONTH', rv.receivingDate) = :month")
+            "AND EXTRACT(YEAR FROM rv.receivingDate) = :year " +
+            "AND EXTRACT(MONTH FROM rv.receivingDate) = :month "+
+            "AND rv.updateJob = false")
     Optional<Revenues> findByCategoryDescriptionAndYearAndMonth(@Param("year") int year,
                                                                @Param("month") int month);
 

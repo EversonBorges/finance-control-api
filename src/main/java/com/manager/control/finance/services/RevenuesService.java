@@ -10,6 +10,7 @@ import com.manager.control.finance.repositories.RevenuesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,8 +60,11 @@ public class RevenuesService {
         repository.deleteById(id);
     }
 
-    public Boolean hasReferenceAdvanceInMonthAndYear(int month, int year){
-        Optional<Revenues> result = repository.findByCategoryDescriptionAndYearAndMonth(month, year);
-        return result.isPresent();
+    public Optional<Revenues> hasReferenceAdvanceInMonthAndYear(int month, int year){
+        return repository.findByCategoryDescriptionAndYearAndMonth(year, month);
+    }
+
+    public void updateRevenue(Revenues revenues) {
+        repository.save(revenues);
     }
 }

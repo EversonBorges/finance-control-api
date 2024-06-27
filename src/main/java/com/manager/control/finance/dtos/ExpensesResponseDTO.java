@@ -2,14 +2,26 @@ package com.manager.control.finance.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.manager.control.finance.entities.Category;
-import com.manager.control.finance.entities.PaymentMethods;
+import com.manager.control.finance.entities.CreditCard;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record ExpensesResponseDTO(
         Integer id,
         String establishment,
-        LocalDate purchaseDate
+        Integer numberInstallment,
+        Integer quantityInstallments,
+        BigDecimal valuesInstallment,
+        String week,
+        LocalDate transactionDate,
+        Integer referenceMonth,
+        Integer referenceYear,
+        String paymentMethods,
+        Category category,
+        CreditCard creditCard
 ) {
 }
+
+

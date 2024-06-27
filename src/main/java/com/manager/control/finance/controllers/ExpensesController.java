@@ -1,17 +1,15 @@
 package com.manager.control.finance.controllers;
 
-import com.manager.control.finance.dtos.*;
-import com.manager.control.finance.entities.Expenses;
-import com.manager.control.finance.entities.PaymentMethods;
-import com.manager.control.finance.services.CreditCardService;
+import com.manager.control.finance.dtos.ExpensesRequestDTO;
+import com.manager.control.finance.dtos.ExpensesResponseDTO;
+import com.manager.control.finance.dtos.ResponseMessage;
+import com.manager.control.finance.dtos.YearlyTransactionSummaryDTO;
+import com.manager.control.finance.interfaces.YearlyTransactionSummary;
 import com.manager.control.finance.services.ExpensesService;
-import com.manager.control.finance.services.PaymentMethodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -20,9 +18,6 @@ public class ExpensesController {
 
     @Autowired
     private ExpensesService service;
-
-    @Autowired
-    private PaymentMethodsService paymentMethodsService;
 
     @PostMapping
     public ResponseEntity<ResponseMessage> create(@RequestBody ExpensesRequestDTO dto){
@@ -51,13 +46,8 @@ public class ExpensesController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/payments-methods")
-    public ResponseEntity<PaymentMethodsResponseDTO> createCategory(@RequestBody PaymentMethodsRequestDTO dto){
-        PaymentMethods response = paymentMethodsService.savePaymentMethods(dto);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(response.getId())
-                .toUri();
-        return ResponseEntity.created(location).body(paymentMethodsService.convertPaymentMethodsToDTO(response));
+    @GetMapping("/financial-summary")
+    public List<YearlyTransactionSummaryDTO> getFinancialSummary() {
+        return service.getYearlyTransactionSummary();
     }
 }

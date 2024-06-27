@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -25,10 +26,10 @@ public class Expenses {
     @Column(name = "quantity_installments")
     private Integer quantityInstallments;
     @Column(name = "values_installment")
-    private Double valuesInstallment;
+    private BigDecimal valuesInstallment;
     private String week;
-    @Column(name = "purchase_date")
-    private LocalDate purchaseDate;
+    @Column(name = "transaction_date")
+    private LocalDate transactionDate;
     @Column(name = "reference_month")
     private Integer referenceMonth;
     @Column(name = "reference_year")
@@ -64,7 +65,7 @@ public class Expenses {
                 ", quantityInstallments=" + quantityInstallments +
                 ", valuesInstallment=" + valuesInstallment +
                 ", week='" + week + '\'' +
-                ", purchaseDate=" + purchaseDate +
+                ", purchaseDate=" + transactionDate +
                 ", referenceMonth=" + referenceMonth +
                 ", referenceYear=" + referenceYear +
                 ", category=" + category +
