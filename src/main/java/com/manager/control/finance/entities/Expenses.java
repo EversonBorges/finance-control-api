@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 @Table(name = "expenses")
@@ -34,6 +35,8 @@ public class Expenses {
     private Integer referenceMonth;
     @Column(name = "reference_year")
     private Integer referenceYear;
+    @Column(name = "transaction_control")
+    private UUID transactionControl;
     @Enumerated(EnumType.STRING)
     private PaymentMethodsEnum paymentMethods;
 

@@ -1,10 +1,6 @@
 package com.manager.control.finance.controllers;
 
-import com.manager.control.finance.dtos.ExpensesRequestDTO;
-import com.manager.control.finance.dtos.ExpensesResponseDTO;
-import com.manager.control.finance.dtos.ResponseMessage;
-import com.manager.control.finance.dtos.YearlyTransactionSummaryDTO;
-import com.manager.control.finance.interfaces.YearlyTransactionSummary;
+import com.manager.control.finance.dtos.*;
 import com.manager.control.finance.services.ExpensesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +16,8 @@ public class ExpensesController {
     private ExpensesService service;
 
     @PostMapping
-    public ResponseEntity<ResponseMessage> create(@RequestBody ExpensesRequestDTO dto){
-        ResponseMessage response = service.create(dto);
+    public ResponseEntity<ResponseMessageDTO> create(@RequestBody ExpensesRequestDTO dto){
+        ResponseMessageDTO response = service.create(dto);
         return ResponseEntity.created(null).body(response);
     }
 
@@ -36,7 +32,7 @@ public class ExpensesController {
     }
 
     @PutMapping
-    public ResponseEntity<ExpensesResponseDTO> update(@RequestBody ExpensesRequestDTO dto){
+    public ResponseEntity<ResponseMessageDTO> update(@RequestBody ExpensesRequestDTO dto){
         return ResponseEntity.ok(service.update(dto));
     }
 
@@ -46,8 +42,20 @@ public class ExpensesController {
         return ResponseEntity.noContent().build();
     }
 
+
     @GetMapping("/financial-summary")
     public List<YearlyTransactionSummaryDTO> getFinancialSummary() {
         return service.getYearlyTransactionSummary();
     }
+
+    @GetMapping("/summary-month/{year}")
+    public SummaryMonthByYearDTO getAllMonthsByYear(@PathVariable int year) {
+        return service.getAllMonthsByYear(year);
+    }
+
+    @GetMapping("/summary-month/{year}/{month}")
+    public SummaryMonthDTO getTransactionsByMonthsByYear(@PathVariable int year,@PathVariable int month) {
+        return service.getTransactionsByMonthsByYear(year, month);
+    }
+
 }

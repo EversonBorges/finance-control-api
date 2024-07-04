@@ -4,9 +4,11 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.manager.control.finance.Mappers.RevenuesMapper;
 import com.manager.control.finance.dtos.RevenuesRequestDTO;
 import com.manager.control.finance.dtos.RevenuesResponseDTO;
+import com.manager.control.finance.entities.Category;
 import com.manager.control.finance.entities.Revenues;
 import com.manager.control.finance.exceptions.DataNotFoundException;
 import com.manager.control.finance.repositories.RevenuesRepository;
+import com.manager.control.finance.utils.GlobalMessages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +24,30 @@ public class RevenuesService {
     @Autowired
     private RevenuesMapper mapper;
 
+    @Autowired
+    private CategoryService categoryService;
+
     public Revenues create(RevenuesRequestDTO dto) {
-        return repository.save(mapper.toEntity(dto));
+
+        var year = dto.receivingDate().getYear();
+        var month = dto.receivingDate().getMonth().getValue();
+
+        Category category = categoryService.findById(dto.category().getId());
+
+        if("Adiantamento".equals(category.getDescription())){
+            month ++;
+
+            if(month > GlobalMessages.DECEMBER) {
+                year ++;
+                month = GlobalMessages.ONE;
+            }
+        }
+
+        Revenues revenues = mapper.toEntity(dto);
+        revenues.setReferenceMonth(month);
+        revenues.setReferenceYear(year);
+
+        return repository.save(revenues);
     }
 
     public RevenuesResponseDTO convertRevenuesToDTO(Revenues revenues) {

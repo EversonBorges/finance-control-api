@@ -10,4 +10,6 @@ public class GlobalMessages {
     public static final String MSG_SUCCESS = "Sucesso ao criar o recurso";
     public static final String ILLEGAL_ARGUMENTS_ERROR = "Código inválido para TipoPagamento: ";
     public static final String DATA_INTEGRITY_VIOLATION = "o valor da chave duplicado viola a restrição exclusiva";
+    public static final String ESSENTIALS = "Essencial";
+    public static final String NO_ESSENTIALS = "Não Essencial";
 }

@@ -4,6 +4,7 @@ import com.manager.control.finance.Mappers.CategoryMapper;
 import com.manager.control.finance.dtos.CategoryRequestDTO;
 import com.manager.control.finance.dtos.CategoryResponseDTO;
 import com.manager.control.finance.entities.Category;
+import com.manager.control.finance.exceptions.DataNotFoundException;
 import com.manager.control.finance.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,5 +32,9 @@ public class CategoryService {
 
     public Category saveCategory(CategoryRequestDTO dto){
         return categoryRepository.save(categoryMapper.toEntity(dto));
+    }
+
+    public Category findById(Integer id) {
+        return categoryRepository.findById(id).orElseThrow(DataNotFoundException::new);
     }
 }

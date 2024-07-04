@@ -10,5 +10,5 @@ public class YearlyTransactionSummaryDTO implements YearlyTransactionSummary {
     private Integer year;
     private BigDecimal amountExpenseYear;
     private BigDecimal amountRevenuesYear;
-
+    private  BigDecimal amountInvestmentsYear;
 }

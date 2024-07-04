@@ -1,6 +1,6 @@
 package com.manager.control.finance.schedules;
 
-import com.manager.control.finance.dtos.ResponseMessage;
+import com.manager.control.finance.dtos.ResponseMessageDTO;
 import com.manager.control.finance.entities.Expenses;
 import com.manager.control.finance.entities.JobManager;
 import com.manager.control.finance.entities.Revenues;
@@ -75,7 +75,7 @@ public class ExpenseSchedule {
                     updateExpensesList.add(item);
 
                 });
-                ResponseMessage message = expensesService.updateAllExpensesByAfterDateNow(updateExpensesList);
+                ResponseMessageDTO message = expensesService.updateAllExpensesByAfterDateNow(updateExpensesList);
                 logger.debug("[ExpenseSchedule - checkAndUpdateDatabase] {}", message.getMessage());
                 result.get().setUpdateJob(true);
                 revenuesService.updateRevenue(result.get());

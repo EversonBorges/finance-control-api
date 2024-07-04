@@ -10,12 +10,12 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponseMessage {
+public class ResponseMessageDTO {
 
     private String message;
     private String timestamp;
 
-    public ResponseMessage(String message) {
+    public ResponseMessageDTO(String message) {
         this.message = message;
         this.timestamp = LocalDateUtil.formatterLocalDateTime(LocalDateTime.now());
     }

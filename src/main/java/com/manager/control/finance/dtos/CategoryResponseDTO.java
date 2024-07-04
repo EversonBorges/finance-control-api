@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record CategoryResponseDTO(
         Integer id,
-        String description
+        String description,
+        String classification
 ) {
 }

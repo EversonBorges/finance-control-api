@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -18,5 +19,23 @@ public interface RevenuesRepository extends JpaRepository<Revenues, Integer> {
             "AND rv.updateJob = false")
     Optional<Revenues> findByCategoryDescriptionAndYearAndMonth(@Param("year") int year,
                                                                @Param("month") int month);
+
+    @Query("SELECT SUM(r.amount), r.referenceMonth, c.description " +
+            "FROM Revenues r " +
+            "INNER JOIN r.category c " +
+            "WHERE r.referenceYear = :year " +
+            "GROUP BY r.referenceMonth, c.description " +
+            "ORDER BY r.referenceMonth ASC")
+    List<Object[]> sumAmountByMonthAndCategory(int year);
+
+    @Query("SELECT SUM(r.amount), r.referenceMonth, c.description " +
+            "FROM Revenues r " +
+            "INNER JOIN r.category c " +
+            "WHERE r.referenceYear = :year " +
+            "AND r.referenceMonth = :month " +
+            "GROUP BY r.referenceMonth, c.description " +
+            "ORDER BY r.referenceMonth ASC")
+    List<Object[]> getRevenuesByYearAndMonthAndCategory(int year, int month);
+
 
 }

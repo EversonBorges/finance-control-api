@@ -20,6 +20,7 @@ public class Category {
     @Column(unique = true)
     private String description;
     private Character type;
+    private String classification;
 
     @Override
     public boolean equals(Object o) {

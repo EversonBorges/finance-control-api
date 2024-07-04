@@ -9,25 +9,24 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "revenues")
+@Table(name = "budgeted")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class Revenues {
+@NoArgsConstructor
+public class Budgeted {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(name = "amount")
-    private BigDecimal amount;
-    @Column(name = "receiving_date")
-    private LocalDate receivingDate;
-    @Column(name = "update_job")
-    private Boolean updateJob = false;
+    private Integer id;
+
+    @Column(name = "register_date")
+    private LocalDate registerDate;
     @Column(name = "reference_year")
     private int referenceYear;
     @Column(name = "reference_month")
     private int referenceMonth;
+    @Column(name = "budgeted_amount")
+    private BigDecimal budgetedAmount;
 
     @ManyToOne
     private Category category;
