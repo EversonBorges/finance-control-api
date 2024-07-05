@@ -8,12 +8,10 @@ import java.util.List;
 
 public interface BudgetedRepository extends JpaRepository<Budgeted, Integer> {
 
-    @Query("SELECT SUM(b.budgetedAmount), b.referenceMonth, c.description, c.classification " +
+    @Query("SELECT b.budgetedAmount, b.referenceMonth, c.description, c.classification " +
             "FROM Budgeted b " +
             "INNER JOIN b.category c " +
             "WHERE b.referenceYear = :year " +
-            "AND b.referenceMonth = :month " +
-            "GROUP BY b.referenceMonth, c.description, c.classification " +
-            "ORDER BY b.referenceMonth ASC, c.classification ASC")
+            "AND b.referenceMonth = :month " )
     List<Object[]> getBudgetedByYearAndMonthAndCategory(int year, int month);
 }
