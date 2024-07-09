@@ -58,4 +58,9 @@ public class ExpensesController {
         return service.getTransactionsByMonthsByYear(year, month);
     }
 
+    @GetMapping("/reference-year-month")
+    public ResponseEntity<List<ExpensesResponseDTO>>  getExpensesByMonthsByYear(@RequestParam int year, @RequestParam int month) {
+        return ResponseEntity.ok(service.findByReferenceYearAndReferenceMonth(year, month));
+    }
+
 }

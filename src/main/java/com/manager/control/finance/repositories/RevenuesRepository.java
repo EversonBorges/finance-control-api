@@ -37,5 +37,5 @@ public interface RevenuesRepository extends JpaRepository<Revenues, Integer> {
             "ORDER BY r.referenceMonth ASC")
     List<Object[]> getRevenuesByYearAndMonthAndCategory(int year, int month);
 
-
+    List<Revenues> findByReferenceYearAndReferenceMonth(int year, int month);
 }

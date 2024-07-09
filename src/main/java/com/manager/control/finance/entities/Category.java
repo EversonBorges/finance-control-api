@@ -21,6 +21,7 @@ public class Category {
     private String description;
     private Character type;
     private String classification;
+    private Boolean active;
 
     @Override
     public boolean equals(Object o) {

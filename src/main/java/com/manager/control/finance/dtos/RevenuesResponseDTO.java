@@ -11,6 +11,6 @@ public record RevenuesResponseDTO(
         Long id,
         BigDecimal amount,
         LocalDate receivingDate,
-        Boolean updateJob
+        Category category
 ) {
 }

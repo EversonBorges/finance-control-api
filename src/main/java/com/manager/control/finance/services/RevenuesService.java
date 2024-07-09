@@ -91,4 +91,10 @@ public class RevenuesService {
     public void updateRevenue(Revenues revenues) {
         repository.save(revenues);
     }
+
+    public List<RevenuesResponseDTO> findByReferenceYearAndReferenceMonth(int year, int month){
+
+        List<Revenues> revenuesList = repository.findByReferenceYearAndReferenceMonth(year, month);
+        return revenuesList.stream().map(mapper::toDTO).toList();
+    }
 }

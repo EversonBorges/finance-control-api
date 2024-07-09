@@ -1,6 +1,7 @@
 package com.manager.control.finance.repositories;
 
 import com.manager.control.finance.entities.Expenses;
+import com.manager.control.finance.entities.Revenues;
 import com.manager.control.finance.enums.PaymentMethodsEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -63,4 +64,6 @@ public interface ExpensesRepository extends JpaRepository<Expenses, Integer> {
             "AND e.referenceMonth = :month " +
             "GROUP BY e.referenceMonth, cc.id")
     List<Object[]> sumValuesByCreditCardAndMonth( int  year, int month);
+
+    List<Expenses> findByReferenceYearAndReferenceMonth(int year, int month);
 }

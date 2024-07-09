@@ -2,6 +2,8 @@ package com.manager.control.finance.controllers;
 
 import com.manager.control.finance.dtos.CategoryRequestDTO;
 import com.manager.control.finance.dtos.CategoryResponseDTO;
+import com.manager.control.finance.dtos.InvestmentsRequestDTO;
+import com.manager.control.finance.dtos.InvestmentsResponseDTO;
 import com.manager.control.finance.entities.Category;
 import com.manager.control.finance.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,11 @@ public class CategoryController {
                 .buildAndExpand(response.getId())
                 .toUri();
         return ResponseEntity.created(location).body(categoryService.convertCategoryToDTO(response));
+    }
+
+    @PutMapping
+    public ResponseEntity<CategoryResponseDTO> update(@RequestBody CategoryRequestDTO dto){
+        return ResponseEntity.ok(categoryService.update(dto));
     }
 
     @GetMapping("/{type}")

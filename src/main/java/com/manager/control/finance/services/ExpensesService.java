@@ -5,6 +5,7 @@ import com.manager.control.finance.Mappers.ExpensesMapper;
 import com.manager.control.finance.dtos.*;
 import com.manager.control.finance.entities.CreditCard;
 import com.manager.control.finance.entities.Expenses;
+import com.manager.control.finance.entities.Revenues;
 import com.manager.control.finance.enums.PaymentMethodsEnum;
 import com.manager.control.finance.exceptions.DataNotFoundException;
 import com.manager.control.finance.repositories.BudgetedRepository;
@@ -374,7 +375,7 @@ public class ExpensesService {
         return expenseSummary;
     }
 
-    public List<ObjectSummary> buildSummaryList(List<Object[]> resultList) {
+    private List<ObjectSummary> buildSummaryList(List<Object[]> resultList) {
         List<ObjectSummary> sumValuesList = new ArrayList<>();
 
         resultList.forEach(result -> {
@@ -391,5 +392,11 @@ public class ExpensesService {
         });
 
         return sumValuesList;
+    }
+
+    public List<ExpensesResponseDTO> findByReferenceYearAndReferenceMonth(int year, int month){
+
+        List<Expenses> expensesList = repository.findByReferenceYearAndReferenceMonth(year, month);
+        return expensesList.stream().map(mapper::toDTO).toList();
     }
 }

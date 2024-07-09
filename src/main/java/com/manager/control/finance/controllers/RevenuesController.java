@@ -50,4 +50,9 @@ public class RevenuesController {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/reference-year-month")
+    public ResponseEntity<List<RevenuesResponseDTO>> findByReferenceYearAndReferenceMonth(@RequestParam int year, @RequestParam int month){
+        return ResponseEntity.ok(service.findByReferenceYearAndReferenceMonth(year, month));
+    }
 }

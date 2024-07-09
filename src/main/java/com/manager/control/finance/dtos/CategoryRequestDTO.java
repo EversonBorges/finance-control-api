@@ -4,6 +4,7 @@ public record CategoryRequestDTO(
         Integer id,
         String description,
         Character type,
-        String classification
+        String classification,
+        boolean active
 ) {
 }
