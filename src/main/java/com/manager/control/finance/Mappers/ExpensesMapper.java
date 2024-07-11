@@ -15,7 +15,22 @@ public class ExpensesMapper {
     private ObjectMapper objectMapper;
 
     public ExpensesResponseDTO toDTO(Expenses expenses) {
-        return objectMapper.convertValue(expenses, ExpensesResponseDTO.class);
+        ExpensesResponseDTO dto = objectMapper.convertValue(expenses, ExpensesResponseDTO.class);
+        String paymentMethodDescription = expenses.getPaymentMethods() != null ? expenses.getPaymentMethods().toString() : null;
+        return new ExpensesResponseDTO(
+                dto.id(),
+                dto.establishment(),
+                dto.numberInstallment(),
+                dto.quantityInstallments(),
+                dto.valuesInstallment(),
+                dto.week(),
+                dto.transactionDate(),
+                dto.referenceMonth(),
+                dto.referenceYear(),
+                dto.category(),
+                dto.creditCard(),
+                paymentMethodDescription
+        );
     }
 
     public Expenses toEntity(ExpensesRequestDTO expensesRequestDTO) {

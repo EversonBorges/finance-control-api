@@ -25,6 +25,6 @@ public enum PaymentMethodsEnum {
 
     @Override
     public String toString() {
-        return String.format("%s (%s)", descriptor, id);
+        return descriptor ;
     }
 }

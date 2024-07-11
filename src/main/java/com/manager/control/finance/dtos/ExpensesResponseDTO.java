@@ -3,6 +3,7 @@ package com.manager.control.finance.dtos;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.manager.control.finance.entities.Category;
 import com.manager.control.finance.entities.CreditCard;
+import com.manager.control.finance.enums.PaymentMethodsEnum;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -18,10 +19,11 @@ public record ExpensesResponseDTO(
         LocalDate transactionDate,
         Integer referenceMonth,
         Integer referenceYear,
-        String paymentMethods,
         Category category,
-        CreditCard creditCard
-) {
+        CreditCard creditCard,
+        String paymentMethods
+        ) {
+
 }
 
 
