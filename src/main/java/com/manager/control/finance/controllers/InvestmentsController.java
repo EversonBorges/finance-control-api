@@ -1,9 +1,6 @@
 package com.manager.control.finance.controllers;
 
-import com.manager.control.finance.dtos.InvestmentsRequestDTO;
-import com.manager.control.finance.dtos.InvestmentsResponseDTO;
-import com.manager.control.finance.dtos.RevenuesRequestDTO;
-import com.manager.control.finance.dtos.RevenuesResponseDTO;
+import com.manager.control.finance.dtos.*;
 import com.manager.control.finance.entities.Investments;
 import com.manager.control.finance.services.InvestmentsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,5 +47,15 @@ public class InvestmentsController {
     public ResponseEntity<?> delete(@PathVariable Integer id){
         service.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/reference-year-month")
+    public ResponseEntity<List<InvestmentsResponseDTO>> findByReferenceYearAndReferenceMonth(@RequestParam int year, @RequestParam int month){
+        return ResponseEntity.ok(service.findByReferenceYearAndReferenceMonth(year, month));
+    }
+
+    @GetMapping("/reference-year-month/{year}")
+    public ResponseEntity<List<InvestmentsResponseDTO>> getExpensesByYear(@PathVariable int year) {
+        return  ResponseEntity.ok(service.findAllByYear(year));
     }
 }

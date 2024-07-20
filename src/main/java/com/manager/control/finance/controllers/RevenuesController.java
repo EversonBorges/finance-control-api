@@ -1,5 +1,6 @@
 package com.manager.control.finance.controllers;
 
+import com.manager.control.finance.dtos.ExpensesResponseDTO;
 import com.manager.control.finance.dtos.RevenuesRequestDTO;
 import com.manager.control.finance.dtos.RevenuesResponseDTO;
 import com.manager.control.finance.entities.Revenues;
@@ -54,5 +55,10 @@ public class RevenuesController {
     @GetMapping("/reference-year-month")
     public ResponseEntity<List<RevenuesResponseDTO>> findByReferenceYearAndReferenceMonth(@RequestParam int year, @RequestParam int month){
         return ResponseEntity.ok(service.findByReferenceYearAndReferenceMonth(year, month));
+    }
+
+    @GetMapping("/reference-year-month/{year}")
+    public ResponseEntity<List<RevenuesResponseDTO>> getExpensesByYear(@PathVariable int year) {
+        return  ResponseEntity.ok(service.findAllByYear(year));
     }
 }

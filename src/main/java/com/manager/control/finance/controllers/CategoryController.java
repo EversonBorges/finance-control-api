@@ -36,6 +36,11 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.update(dto));
     }
 
+    @GetMapping
+    public ResponseEntity<List<CategoryResponseDTO>> findAllCategory(){
+        return ResponseEntity.ok(categoryService.findAllCategory());
+    }
+
     @GetMapping("/{type}")
     public ResponseEntity<List<CategoryResponseDTO>> findAllCategoryByType(@PathVariable Character type){
         return ResponseEntity.ok(categoryService.findAllCategoryByType(type));

@@ -8,6 +8,7 @@ import java.time.LocalDate;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record InvestmentsResponseDTO(
+        Integer id,
         String description,
         LocalDate transactionDate,
         int referenceYear,

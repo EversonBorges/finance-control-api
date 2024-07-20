@@ -58,4 +58,9 @@ public class CategoryService {
             throw new DataNotFoundException();
         }
     }
+
+    public List<CategoryResponseDTO> findAllCategory() {
+        List<Category> result = categoryRepository.findAll();
+        return result.stream().map(categoryMapper::toDTO).toList();
+    }
 }

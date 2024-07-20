@@ -1,6 +1,7 @@
 package com.manager.control.finance.controllers;
 
 import com.manager.control.finance.dtos.*;
+import com.manager.control.finance.services.CommonsService;
 import com.manager.control.finance.services.ExpensesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -42,20 +43,9 @@ public class ExpensesController {
         return ResponseEntity.noContent().build();
     }
 
-
     @GetMapping("/financial-summary")
     public List<YearlyTransactionSummaryDTO> getFinancialSummary() {
         return service.getYearlyTransactionSummary();
-    }
-
-    @GetMapping("/summary-month/{year}")
-    public SummaryMonthByYearDTO getAllMonthsByYear(@PathVariable int year) {
-        return service.getAllMonthsByYear(year);
-    }
-
-    @GetMapping("/summary-month/{year}/{month}")
-    public SummaryMonthDTO getTransactionsByMonthsByYear(@PathVariable int year,@PathVariable int month) {
-        return service.getTransactionsByMonthsByYear(year, month);
     }
 
     @GetMapping("/reference-year-month")
@@ -63,4 +53,8 @@ public class ExpensesController {
         return ResponseEntity.ok(service.findByReferenceYearAndReferenceMonth(year, month));
     }
 
+    @GetMapping("/reference-year-month/{year}")
+    public ResponseEntity<List<ExpensesResponseDTO>> getExpensesByYear(@PathVariable int year) {
+        return  ResponseEntity.ok(service.findAllByYear(year));
+    }
 }

@@ -5,6 +5,7 @@ import com.manager.control.finance.Mappers.RevenuesMapper;
 import com.manager.control.finance.dtos.RevenuesRequestDTO;
 import com.manager.control.finance.dtos.RevenuesResponseDTO;
 import com.manager.control.finance.entities.Category;
+import com.manager.control.finance.entities.Expenses;
 import com.manager.control.finance.entities.Revenues;
 import com.manager.control.finance.exceptions.DataNotFoundException;
 import com.manager.control.finance.repositories.RevenuesRepository;
@@ -96,5 +97,10 @@ public class RevenuesService {
 
         List<Revenues> revenuesList = repository.findByReferenceYearAndReferenceMonth(year, month);
         return revenuesList.stream().map(mapper::toDTO).toList();
+    }
+
+    public List<RevenuesResponseDTO> findAllByYear(int year) {
+        List<Revenues> expensesList = repository.findByReferenceYear(year);
+        return expensesList.stream().map(mapper::toDTO).toList();
     }
 }

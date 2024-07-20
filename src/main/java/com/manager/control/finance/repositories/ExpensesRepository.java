@@ -66,4 +66,20 @@ public interface ExpensesRepository extends JpaRepository<Expenses, Integer> {
     List<Object[]> sumValuesByCreditCardAndMonth( int  year, int month);
 
     List<Expenses> findByReferenceYearAndReferenceMonth(int year, int month);
+
+    List<Expenses> findByReferenceYear(int year);
+
+    @Query("SELECT SUM(e.valuesInstallment), e.referenceYear, c.type, c.classification " +
+            "FROM Expenses e " +
+            "INNER JOIN e.category c " +
+            "GROUP BY e.referenceYear, c.type, c.classification")
+    List<Object[]> findExpensesSumGroupedByYearAndCategory();
+
+    @Query("SELECT SUM(e.valuesInstallment), e.referenceMonth, c.type, c.classification " +
+            "FROM Expenses e " +
+            "INNER JOIN e.category c " +
+            "WHERE e.referenceYear = :year " +
+            "GROUP BY e.referenceMonth, c.type, c.classification")
+    List<Object[]> findExpensesSumGroupedByMonthAndCategory(int year);
+
 }

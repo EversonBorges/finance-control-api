@@ -38,4 +38,6 @@ public interface RevenuesRepository extends JpaRepository<Revenues, Integer> {
     List<Object[]> getRevenuesByYearAndMonthAndCategory(int year, int month);
 
     List<Revenues> findByReferenceYearAndReferenceMonth(int year, int month);
+
+    List<Revenues> findByReferenceYear(int year);
 }

@@ -7,6 +7,7 @@ public record CategoryResponseDTO(
         Integer id,
         String description,
         String classification,
-        boolean active
+        boolean active,
+        Character type
 ) {
 }

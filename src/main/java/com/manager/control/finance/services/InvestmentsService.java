@@ -2,8 +2,10 @@ package com.manager.control.finance.services;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.manager.control.finance.Mappers.InvestmentsMapper;
+import com.manager.control.finance.dtos.ExpensesResponseDTO;
 import com.manager.control.finance.dtos.InvestmentsRequestDTO;
 import com.manager.control.finance.dtos.InvestmentsResponseDTO;
+import com.manager.control.finance.entities.Expenses;
 import com.manager.control.finance.entities.Investments;
 import com.manager.control.finance.exceptions.DataNotFoundException;
 import com.manager.control.finance.repositories.InvestmentsRepository;
@@ -65,5 +67,16 @@ public class InvestmentsService {
         }else{
             throw new DataNotFoundException();
         }
+    }
+
+    public List<InvestmentsResponseDTO> findByReferenceYearAndReferenceMonth(int year, int month){
+
+        List<Investments> investmentsList = investmentsRepository.findByReferenceYearAndReferenceMonth(year, month);
+        return investmentsList.stream().map(investmentsMapper::toDTO).toList();
+    }
+
+    public List<InvestmentsResponseDTO> findAllByYear(int year) {
+        List<Investments> expensesList = investmentsRepository.findByReferenceYear(year);
+        return expensesList.stream().map(investmentsMapper::toDTO).toList();
     }
 }

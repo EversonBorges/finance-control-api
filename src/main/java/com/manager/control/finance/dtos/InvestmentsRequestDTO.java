@@ -10,8 +10,6 @@ public record InvestmentsRequestDTO(
         Integer id,
         String description,
         LocalDate transactionDate,
-        int referenceYear,
-        int referenceMonth,
         BigDecimal valueInvestments,
         Category category
 ) {
