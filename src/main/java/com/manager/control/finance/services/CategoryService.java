@@ -63,4 +63,8 @@ public class CategoryService {
         List<Category> result = categoryRepository.findAll();
         return result.stream().map(categoryMapper::toDTO).toList();
     }
+
+    public Category findByDescription(String description) {
+       return categoryRepository.findByDescription(description);
+    }
 }

@@ -13,6 +13,7 @@ import com.manager.control.finance.utils.GlobalMessages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -33,16 +34,15 @@ public class RevenuesService {
         var year = dto.receivingDate().getYear();
         var month = dto.receivingDate().getMonth().getValue();
 
-        Category category = categoryService.findById(dto.category().getId());
-
-        if("Adiantamento".equals(category.getDescription())){
+        //Category category = categoryService.findById(dto.category().getId());
+        /*if("Adiantamento".equals(category.getDescription())){
             month ++;
 
             if(month > GlobalMessages.DECEMBER) {
                 year ++;
                 month = GlobalMessages.ONE;
             }
-        }
+        }*/
 
         Revenues revenues = mapper.toEntity(dto);
         revenues.setReferenceMonth(month);
@@ -85,7 +85,7 @@ public class RevenuesService {
         repository.deleteById(id);
     }
 
-    public Optional<Revenues> hasReferenceAdvanceInMonthAndYear(int month, int year){
+    public Optional<List<Revenues>> hasReferenceAdvanceInMonthAndYear(int month, int year){
         return repository.findByCategoryDescriptionAndYearAndMonth(year, month);
     }
 

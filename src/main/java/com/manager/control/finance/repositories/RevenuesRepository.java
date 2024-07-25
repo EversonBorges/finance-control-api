@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,11 +14,11 @@ import java.util.Optional;
 public interface RevenuesRepository extends JpaRepository<Revenues, Integer> {
 
     @Query("SELECT rv FROM Revenues rv JOIN rv.category ca " +
-            "WHERE ca.description = 'Adiantamento' " +
+            "WHERE ca.description ='Adiantamento' " +
             "AND EXTRACT(YEAR FROM rv.receivingDate) = :year " +
             "AND EXTRACT(MONTH FROM rv.receivingDate) = :month "+
             "AND rv.updateJob = false")
-    Optional<Revenues> findByCategoryDescriptionAndYearAndMonth(@Param("year") int year,
+    Optional<List<Revenues>> findByCategoryDescriptionAndYearAndMonth(@Param("year") int year,
                                                                @Param("month") int month);
 
     @Query("SELECT SUM(r.amount), r.referenceMonth, c.description " +
@@ -40,4 +41,5 @@ public interface RevenuesRepository extends JpaRepository<Revenues, Integer> {
     List<Revenues> findByReferenceYearAndReferenceMonth(int year, int month);
 
     List<Revenues> findByReferenceYear(int year);
+
 }

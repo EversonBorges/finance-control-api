@@ -1,6 +1,7 @@
 package com.manager.control.finance.controllers;
 
 import com.manager.control.finance.dtos.*;
+import com.manager.control.finance.entities.JobManager;
 import com.manager.control.finance.services.CommonsService;
 import com.manager.control.finance.services.ExpensesService;
 import org.springframework.beans.factory.annotation.Autowired;

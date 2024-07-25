@@ -14,8 +14,8 @@ import java.util.UUID;
 
 @Repository
 public interface ExpensesRepository extends JpaRepository<Expenses, Integer> {
-    List<Expenses> findByTransactionDateGreaterThanEqualAndPaymentMethodsIn(LocalDate startDate,
-                                                                            List<PaymentMethodsEnum> paymentMethods);
+    List<Expenses> findByTransactionDateBetweenAndPaymentMethodsIn(LocalDate startDate, LocalDate endDate,
+                                                                   List<PaymentMethodsEnum> paymentMethods);
     @Query(value = """
         SELECT
           COALESCE(expenses.reference_year, revenues.receiving_year, investments.investments_year) AS year,  

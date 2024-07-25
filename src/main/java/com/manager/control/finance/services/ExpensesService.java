@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.WeekFields;
 import java.util.*;
@@ -75,12 +76,12 @@ public class ExpensesService {
         var referenceDayPurchase = creditCard.getReferenceDayPurchase();
 
         var year = checkYearIncrement(dto.transactionDate());
-        var dueDate = LocalDate.of(year, dto.transactionDate().getMonth().plus(GlobalMessages.ONE).getValue(), dueDay);
-        LocalDate bestOfDayPurchase = dueDate.minusDays(referenceDayPurchase);
+        var dueDate = LocalDate.of(year, dto.transactionDate().getMonth().plus(GlobalMessages.ONE).getValue(), referenceDayPurchase);
+        LocalDate bestOfDayPurchase = dueDate.minusDays(dueDay);
         long diffDays = ChronoUnit.DAYS.between(dto.transactionDate(), bestOfDayPurchase);
 
         if(diffDays > GlobalMessages.MAX_DAY){
-            dueDate = LocalDate.of(year, dto.transactionDate().getMonth().getValue(), dueDay);
+            dueDate = LocalDate.of(year, dto.transactionDate().getMonth().getValue(), referenceDayPurchase);
         }
 
         if(dto.transactionDate().isBefore(bestOfDayPurchase)){
@@ -156,12 +157,15 @@ public class ExpensesService {
     }
 
     public List<Expenses> findAllExpensesBasedReceivingDate(LocalDate date){
+        YearMonth yearMonth = YearMonth.from(date);
+        LocalDate lastDayOfMonth = yearMonth.atEndOfMonth();
+
         List<PaymentMethodsEnum> paymentMethods = Arrays.asList(
                 PaymentMethodsEnum.DEBIT_CARD,
                 PaymentMethodsEnum.PIX,
                 PaymentMethodsEnum.ACCOUNT_DISCOUNT);
 
-        return repository.findByTransactionDateGreaterThanEqualAndPaymentMethodsIn(date,paymentMethods);
+        return repository.findByTransactionDateBetweenAndPaymentMethodsIn(date, lastDayOfMonth,paymentMethods);
     }
 
     public ResponseMessageDTO updateAllExpensesByAfterDateNow(List<Expenses> updateExpensesList){

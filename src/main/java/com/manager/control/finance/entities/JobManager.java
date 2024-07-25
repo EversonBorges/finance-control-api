@@ -28,6 +28,8 @@ public class JobManager {
     private String statusExecution;
     @Column(name = "executor_method")
     private String executorMethod;
+    @Column(name = "automatic_execution")
+    private Boolean automaticExecution;
 
     @Override
     public boolean equals(Object o) {
